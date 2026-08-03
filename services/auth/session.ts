@@ -31,3 +31,14 @@ export const clearSession = async () => {
   if (Platform.OS === 'web') window.localStorage.removeItem(SESSION_KEY);
   else await SecureStore.deleteItemAsync(SESSION_KEY);
 };
+
+export const updateStoredSession = async (session: AuthSession) => {
+  const current = Platform.OS === 'web' ? window.localStorage.getItem(SESSION_KEY) : await SecureStore.getItemAsync(SESSION_KEY);
+  let expiresAt = Date.now() + session.expiresIn * 1000;
+  if (current) {
+    try { expiresAt = (JSON.parse(current) as StoredSession).expiresAt || expiresAt; } catch {}
+  }
+  const value = JSON.stringify({ session, expiresAt } satisfies StoredSession);
+  if (Platform.OS === 'web') window.localStorage.setItem(SESSION_KEY, value);
+  else await SecureStore.setItemAsync(SESSION_KEY, value);
+};

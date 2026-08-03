@@ -15,24 +15,25 @@ type Props = {
   isGuest: boolean;
   onAuthenticated: (session: AuthSession) => void;
   onGuest: () => void;
+  onSessionChange: (session: AuthSession) => void;
   onExit: () => void;
 };
 
-function MainTabs({ session, onExit }: Pick<Props, 'session' | 'onExit'>) {
+function MainTabs({ session, onSessionChange, onExit }: Pick<Props, 'session' | 'onSessionChange' | 'onExit'>) {
   return <Tabs.Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <BottomNavigationBar {...props} />}>
     <Tabs.Screen name="Equipment">{() => <EquipmentListScreen accessToken={session?.accessToken} />}</Tabs.Screen>
     <Tabs.Screen name="MyBuild">{() => <MyBuildListScreen accessToken={session?.accessToken} />}</Tabs.Screen>
     {session?.isAdmin ? <Tabs.Screen name="Admin">{() => <AdminEquipmentScreen accessToken={session.accessToken} />}</Tabs.Screen> : null}
-    <Tabs.Screen name="MyPage">{() => <MyPageScreen session={session} onExit={onExit} />}</Tabs.Screen>
+    <Tabs.Screen name="MyPage">{() => <MyPageScreen session={session} onSessionChange={onSessionChange} onExit={onExit} />}</Tabs.Screen>
   </Tabs.Navigator>;
 }
 
-export default function AppRouter({ session, isGuest, onAuthenticated, onGuest, onExit }: Props) {
+export default function AppRouter({ session, isGuest, onAuthenticated, onGuest, onSessionChange, onExit }: Props) {
   const authenticated = Boolean(session) || isGuest;
   return <NavigationContainer theme={theme}>
     <RootStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed', headerShadowVisible: false, contentStyle: { backgroundColor: '#0c0c0e' } }}>
       {!authenticated ? <RootStack.Screen name="Auth" options={{ headerShown: false }}>{() => <AuthScreen onAuthenticated={onAuthenticated} onGuest={onGuest} />}</RootStack.Screen> : <>
-        <RootStack.Screen name="MainTabs" options={{ headerShown: false }}>{() => <MainTabs session={session} onExit={onExit} />}</RootStack.Screen>
+        <RootStack.Screen name="MainTabs" options={{ headerShown: false }}>{() => <MainTabs session={session} onSessionChange={onSessionChange} onExit={onExit} />}</RootStack.Screen>
         <RootStack.Screen name="EquipmentDetail" options={{ title: '부품 상세' }}>{(props) => <EquipmentDetailScreen {...props} accessToken={session?.accessToken} />}</RootStack.Screen>
         {session ? <>
           <RootStack.Screen name="MyBuildCreate" options={{ title: '새 견적', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildFormScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>

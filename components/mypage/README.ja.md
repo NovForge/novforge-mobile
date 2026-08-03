@@ -1,45 +1,47 @@
 # MyPage コンポーネント
 
-マイページ画面でユーザー情報を表示し、ログアウト動作をつなぐ表現コンポーネントを管理します。
+マイページでユーザー情報を表示し、ニックネーム・プロフィール画像の変更とログアウト操作を接続する表示コンポーネントを管理します。
 
-このディレクトリは UI の描画とユーザーイベントの伝達のみを担当します。認証状態の確認、セッション情報の処理、画面遷移はそれぞれ Service、Screen、Router で処理します。
+このディレクトリはUI描画とユーザーイベントの通知のみを担当します。更新リクエスト、入力状態、セッション更新はScreenとServiceで処理します。
 
 ## ファイル構成
 
 | ファイル | 役割 |
 | --- | --- |
-| `MyPageCard.tsx` | ユーザーアバター、ニックネーム、メール、ログアウトボタンを表示 |
-| `MyPageCard.styles.ts` | MyPage カード UI のスタイル |
-| `index.ts` | MyPage コンポーネントの公開入口 |
+| `MyPageCard.tsx` | ユーザー情報、画像変更、情報編集、ログアウト操作を表示 |
+| `MyPageEditModal.tsx` | 名前・メールの参照とニックネーム編集フォームを表示 |
+| `MyPageCard.styles.ts` | MyPageコンポーネント共通スタイル |
+| `index.ts` | MyPageコンポーネントの公開エントリーポイント |
 
 ## MyPageCard
 
-マイページ上部にユーザー情報をカード形式で描画します。セッションがある場合はプロフィール画像があれば表示し、なければニックネームの頭文字をアバター代替テキストとして表示します。
-
-### Props
+ユーザープロフィールをカードで表示します。画像または情報編集ボタンの操作を上位Screenへ通知します。
 
 | Prop | 型 | 説明 |
 | --- | --- | --- |
-| `session` | `AuthSession \| null` | 現在のログインセッション情報 |
-| `onExit` | `() => void` | ログアウトまたはログイン画面へ移動する動作 |
+| `session` | `AuthSession \| null` | 現在のログインセッション |
+| `onEdit` | `() => void` | 情報編集選択時に呼び出す |
+| `onProfileImagePress` | `() => void` | プロフィール画像選択時に呼び出す |
+| `onExit` | `() => void` | ログアウトまたはログイン画面移動時に呼び出す |
 
-### 使用例
+## MyPageEditModal
 
-```tsx
-<MyPageCard session={session} onExit={onExit} />
-```
+Google名とメールは読み取り専用で表示し、ニックネームのみ編集できます。ニックネームは最大50文字です。
 
-## 関連 Screen
+## プロフィール画像選択
 
-### MyPageScreen
+`MyPageCard`のプロフィール画像を選択するとExpo ImagePickerを起動します。Webではファイル選択画面、AndroidとiOSではシステムの写真ライブラリを表示します。JPEG、PNG、WebPを5MB以下に制限してアップロードします。
 
-`screens/mypage/MyPageScreen.tsx` はマイページ画面です。`MyPageCard` を包んで SafeAreaView 内に配置します。
+## 関連Screen
 
-## 責務分離
+`screens/mypage/MyPageScreen.tsx`がモーダル表示、入力、保存、エラー状態とユーザー情報更新を管理します。更新成功時は現在のセッションと保存済みセッションを同時に更新します。
 
-| 配置 | 責務 |
+## 責務の分離
+
+| 場所 | 責務 |
 | --- | --- |
-| `components/mypage` | マイページカード UI の描画 |
-| `screens/mypage` | マイページ画面の状態とレイアウト構成 |
-| `services/auth` | セッションおよび認証関連データ管理 |
-| `router` | マイページタブの登録 |
+| `components/mypage` | プロフィールカードと編集モーダルUI |
+| `screens/mypage` | 入力・エラー・保存状態と更新処理 |
+| `services/users` | ニックネーム更新とプロフィール画像ファイルのアップロード |
+| `services/auth` | 現在および保存済みセッションの更新 |
+| `router` | マイページタブとセッション変更処理の接続 |
