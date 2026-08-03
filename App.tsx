@@ -1,20 +1,18 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { AppRouter } from './router';
+import { AuthSession, clearSession, loadSession } from './services/auth';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  const [session, setSession] = useState<AuthSession | null>(null);
+  const [isGuest, setIsGuest] = useState(false);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  useEffect(() => { loadSession().then(setSession); }, []);
+
+  const exit = async () => {
+    await clearSession();
+    setSession(null);
+    setIsGuest(false);
+  };
+
+  return <AppRouter session={session} isGuest={isGuest} onAuthenticated={setSession} onGuest={() => setIsGuest(true)} onExit={() => void exit()} />;
+}
