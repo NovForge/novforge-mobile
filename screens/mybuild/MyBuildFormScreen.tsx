@@ -17,7 +17,7 @@ export default function MyBuildFormScreen({ navigation, accessToken }: Props) {
   };
   return <SafeAreaView style={styles.screen}><View style={styles.content}>
     <Text style={styles.label}>견적 이름</Text><TextInput value={name} onChangeText={setName} placeholder="예: 200만원 게이밍 PC" placeholderTextColor="#475569" maxLength={100} style={styles.input} autoFocus />
-    <View style={styles.switchRow}><View><Text style={styles.switchTitle}>견적 공개</Text><Text style={styles.help}>다른 사용자가 이 견적을 볼 수 있습니다.</Text></View><Switch value={isPublic} onValueChange={setPublic} trackColor={{ false: '#334155', true: '#7c3aed' }} /></View>
+    <View style={styles.switchRow}><View><Text style={styles.switchTitle}>견적 공개</Text><Text style={styles.help}>다른 사용자가 이 견적을 볼 수 있습니다.</Text></View><Switch value={isPublic} onValueChange={setPublic} trackColor={{ false: '#404040', true: '#ffffff' }} thumbColor={isPublic ? '#000000' : '#d4d4d4'} /></View>
     <TouchableOpacity style={[styles.button, saving && styles.disabled]} onPress={() => void submit()} disabled={saving}><Text style={styles.buttonText}>{saving ? '만드는 중...' : '견적 만들기'}</Text></TouchableOpacity>
   </View></SafeAreaView>;
 }

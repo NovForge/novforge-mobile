@@ -1,14 +1,14 @@
 import { StyleSheet } from 'react-native';
 
 export const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#080d18' },
-  header: { paddingHorizontal: 20, paddingTop: 18, paddingBottom: 14 },
-  brand: { color: '#a78bfa', fontSize: 12, fontWeight: '800', letterSpacing: 2 },
-  title: { color: '#f8fafc', fontSize: 24, fontWeight: '800', marginTop: 4 },
+  screen: { flex: 1, backgroundColor: '#0c0c0e' },
+  header: { paddingHorizontal: 20, paddingTop: 20, paddingBottom: 16 },
+  brand: { color: '#555555', fontSize: 10, fontWeight: '700', letterSpacing: 1.5 },
+  title: { color: '#ededed', fontSize: 24, fontWeight: '700', marginTop: 4 },
   list: { padding: 16, paddingBottom: 40 },
   center: { flex: 1, alignItems: 'center', justifyContent: 'center', padding: 30 },
-  stateTitle: { color: '#e2e8f0', fontSize: 17, fontWeight: '700', textAlign: 'center' },
-  stateBody: { color: '#64748b', fontSize: 14, textAlign: 'center', marginTop: 8 },
-  retryButton: { marginTop: 18, backgroundColor: '#8b5cf6', borderRadius: 999, paddingHorizontal: 20, paddingVertical: 10 },
-  retryText: { color: '#fff', fontWeight: '700' },
+  stateTitle: { color: '#d4d4d4', fontSize: 17, fontWeight: '700', textAlign: 'center' },
+  stateBody: { color: '#5f5f5f', fontSize: 13, textAlign: 'center', marginTop: 8 },
+  retryButton: { marginTop: 18, backgroundColor: '#ededed', borderRadius: 9, paddingHorizontal: 20, paddingVertical: 11 },
+  retryText: { color: '#111111', fontWeight: '700' },
 });

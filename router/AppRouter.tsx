@@ -8,7 +8,7 @@ import { MainTabParamList, RootStackParamList } from './routes';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const Tabs = createBottomTabNavigator<MainTabParamList>();
-const theme = { ...DarkTheme, colors: { ...DarkTheme.colors, background: '#080d18', card: '#0d1422', border: '#1e293b', primary: '#8b5cf6', text: '#f8fafc' } };
+const theme = { ...DarkTheme, colors: { ...DarkTheme.colors, background: '#0c0c0e', card: '#111114', border: '#27272a', primary: '#ededed', text: '#ededed' } };
 
 type Props = {
   session: AuthSession | null;
@@ -29,14 +29,14 @@ function MainTabs({ session, onExit }: Pick<Props, 'session' | 'onExit'>) {
 export default function AppRouter({ session, isGuest, onAuthenticated, onGuest, onExit }: Props) {
   const authenticated = Boolean(session) || isGuest;
   return <NavigationContainer theme={theme}>
-    <RootStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#0d1422' }, headerTintColor: '#f8fafc', contentStyle: { backgroundColor: '#080d18' } }}>
+    <RootStack.Navigator screenOptions={{ headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed', headerShadowVisible: false, contentStyle: { backgroundColor: '#0c0c0e' } }}>
       {!authenticated ? <RootStack.Screen name="Auth" options={{ headerShown: false }}>{() => <AuthScreen onAuthenticated={onAuthenticated} onGuest={onGuest} />}</RootStack.Screen> : <>
         <RootStack.Screen name="MainTabs" options={{ headerShown: false }}>{() => <MainTabs session={session} onExit={onExit} />}</RootStack.Screen>
         <RootStack.Screen name="EquipmentDetail" options={{ title: '부품 상세' }}>{(props) => <EquipmentDetailScreen {...props} accessToken={session?.accessToken} />}</RootStack.Screen>
         {session ? <>
-          <RootStack.Screen name="MyBuildCreate" options={{ title: '새 견적' }}>{(props) => <MyBuildFormScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
-          <RootStack.Screen name="MyBuildDetail" options={{ title: '견적 상세' }}>{(props) => <MyBuildDetailScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
-          <RootStack.Screen name="MyBuildPartPicker" options={{ title: '부품 선택' }}>{(props) => <MyBuildPartPickerScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
+          <RootStack.Screen name="MyBuildCreate" options={{ title: '새 견적', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildFormScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
+          <RootStack.Screen name="MyBuildDetail" options={{ title: '견적 상세', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildDetailScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
+          <RootStack.Screen name="MyBuildPartPicker" options={{ title: '부품 선택', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildPartPickerScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
         </> : null}
       </>}
     </RootStack.Navigator>

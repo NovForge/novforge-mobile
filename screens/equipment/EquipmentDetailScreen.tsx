@@ -15,7 +15,7 @@ export default function EquipmentDetailScreen({ route, accessToken }: Props) {
   const category = EQUIPMENT_CATEGORIES.find((entry) => entry.key === route.params.categoryKey);
   useEffect(() => { fetchEquipmentDetail(route.params.categoryKey, route.params.itemId, accessToken).then(setItem).catch((cause) => setError(cause instanceof Error ? cause.message : '상세 정보를 불러오지 못했습니다.')); }, [route.params.categoryKey, route.params.itemId, accessToken]);
   if (error) return <SafeAreaView style={styles.center}><Text style={styles.error}>{error}</Text></SafeAreaView>;
-  if (!item) return <SafeAreaView style={styles.center}><ActivityIndicator size="large" color="#8b5cf6" /></SafeAreaView>;
+  if (!item) return <SafeAreaView style={styles.center}><ActivityIndicator size="large" color="#ffffff" /></SafeAreaView>;
   const specs = Object.entries(item).filter(([key, value]) => !BASE_KEYS.has(key) && value !== null && value !== undefined);
   return <SafeAreaView style={styles.screen}><ScrollView>
     {item.imageUrl ? <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" /> : <View style={styles.imageFallback}><Text style={styles.imageFallbackText}>{category?.label || 'PC'}</Text></View>}
