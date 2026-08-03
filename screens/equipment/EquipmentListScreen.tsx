@@ -30,7 +30,7 @@ export default function EquipmentListScreen({ accessToken }: Props) {
     <StatusBar style="light" />
     <View style={styles.header}><Text style={styles.brand}>NOVFORGE</Text><Text style={styles.title}>PC 부품</Text></View>
     <CategoryTabs selected={category} onSelect={setCategory} />
-    {loading ? <View style={styles.center}><ActivityIndicator size="large" color="#8b5cf6" /></View>
+    {loading ? <View style={styles.center}><ActivityIndicator size="large" color="#ffffff" /></View>
       : error ? <View style={styles.center}><Text style={styles.stateTitle}>{error}</Text><TouchableOpacity style={styles.retryButton} onPress={() => void load(category)}><Text style={styles.retryText}>다시 시도</Text></TouchableOpacity></View>
       : <FlatList data={items} keyExtractor={(item) => String(item.id)} contentContainerStyle={styles.list}
           ListEmptyComponent={<View style={styles.center}><Text style={styles.stateTitle}>등록된 부품이 없습니다.</Text><Text style={styles.stateBody}>부품이 추가되면 여기에 표시됩니다.</Text></View>}
