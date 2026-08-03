@@ -3,8 +3,9 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { styles } from './BottomNavigationBar.styles';
 
 const LABELS: Record<string, { label: string; mark: string }> = {
-  Equipment: { label: '부품', mark: 'P' },
+  Equipment: { label: '장비', mark: 'P' },
   MyBuild: { label: '내 견적', mark: 'N' },
+  Admin: { label: '관리', mark: 'A' },
   MyPage: { label: '마이', mark: 'M' },
 };
 

@@ -10,5 +10,6 @@ export type RootStackParamList = {
 export type MainTabParamList = {
   Equipment: undefined;
   MyBuild: undefined;
+  Admin: undefined;
   MyPage: undefined;
 };
