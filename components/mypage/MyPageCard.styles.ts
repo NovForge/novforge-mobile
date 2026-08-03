@@ -19,6 +19,8 @@ export const styles = StyleSheet.create({
   profileError: { color: '#df929b', fontSize: 11, lineHeight: 16, textAlign: 'center', marginTop: 12 },
   logoutButton: { marginTop: 18, borderWidth: 1, borderColor: '#303036', borderRadius: 9, paddingVertical: 13, alignItems: 'center' },
   logoutText: { color: '#999999', fontWeight: '600' },
+  withdrawButton: { marginTop: 8, paddingVertical: 11, alignItems: 'center' },
+  withdrawText: { color: '#b86f78', fontSize: 12, fontWeight: '600' },
   modalBackdrop: { flex: 1, backgroundColor: 'rgba(0,0,0,0.72)', alignItems: 'center', justifyContent: 'center', padding: 18 },
   modalPanel: { width: '100%', maxWidth: 440, backgroundColor: '#18181b', borderWidth: 1, borderColor: '#35353b', borderRadius: 8, padding: 22 },
   modalEyebrow: { color: '#82945f', fontSize: 10, fontWeight: '800', letterSpacing: 1.2 },
@@ -35,4 +37,6 @@ export const styles = StyleSheet.create({
   saveButton: { backgroundColor: '#dce9bd', borderRadius: 6, paddingHorizontal: 22, paddingVertical: 11, minWidth: 78, alignItems: 'center' },
   saveText: { color: '#17200c', fontWeight: '800' },
   disabled: { opacity: 0.5 },
+  dangerButton: { backgroundColor: '#b94f5b', borderRadius: 6, paddingHorizontal: 18, paddingVertical: 11, minWidth: 94, alignItems: 'center' },
+  dangerText: { color: '#ffffff', fontWeight: '800' },
 });

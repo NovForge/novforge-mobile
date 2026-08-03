@@ -21,6 +21,23 @@ const patchUser = async (path: string, body: Record<string, string>, accessToken
 export const updateMyNickname = (userNickname: string, accessToken: string) =>
   patchUser('/api/users/me', { userNickname }, accessToken);
 
+export const withdrawMe = async (accessToken: string): Promise<void> => {
+  const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+    method: 'DELETE',
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!response.ok) {
+    let message = response.status === 401
+      ? '로그인이 만료되었습니다. 다시 로그인해 주세요.'
+      : '회원탈퇴를 완료하지 못했습니다.';
+    try {
+      const error = await response.json();
+      message = error.detail || error.message || message;
+    } catch {}
+    throw new ApiError(response.status, message);
+  }
+};
+
 export const uploadMyProfileImage = async (asset: ImagePickerAsset, accessToken: string): Promise<AuthUser> => {
   const formData = new FormData();
   if (asset.file) {
