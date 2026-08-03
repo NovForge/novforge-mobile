@@ -14,5 +14,5 @@ export default function App() {
     setIsGuest(false);
   };
 
-  return <AppRouter session={session} isGuest={isGuest} onAuthenticated={setSession} onGuest={() => setIsGuest(true)} onExit={() => void exit()} />;
+  return <AppRouter session={session} isGuest={isGuest} onAuthenticated={setSession} onGuest={() => setIsGuest(true)} onSessionChange={setSession} onExit={() => void exit()} />;
 }
