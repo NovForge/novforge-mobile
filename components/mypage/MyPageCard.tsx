@@ -2,9 +2,9 @@ import { ActivityIndicator, Image, Text, TouchableOpacity, View } from 'react-na
 import { AuthSession } from '../../services/auth';
 import { styles } from './MyPageCard.styles';
 
-type Props = { session: AuthSession | null; profileUploading: boolean; profileError: string | null; onEdit: () => void; onProfileImagePress: () => void; onExit: () => void };
+type Props = { session: AuthSession | null; profileUploading: boolean; profileError: string | null; onEdit: () => void; onProfileImagePress: () => void; onWithdraw: () => void; onExit: () => void };
 
-export default function MyPageCard({ session, profileUploading, profileError, onEdit, onProfileImagePress, onExit }: Props) {
+export default function MyPageCard({ session, profileUploading, profileError, onEdit, onProfileImagePress, onWithdraw, onExit }: Props) {
   const avatar = session?.user.profileImage ? <Image source={{ uri: session.user.profileImage }} style={styles.avatar} /> :
     <View style={styles.avatarFallback}><Text style={styles.avatarText}>{session?.user.userNickname?.slice(0, 1) || 'G'}</Text></View>;
 
@@ -22,5 +22,6 @@ export default function MyPageCard({ session, profileUploading, profileError, on
       {profileError ? <Text style={styles.profileError}>{profileError}</Text> : null}
     </View>
     <TouchableOpacity style={styles.logoutButton} onPress={onExit}><Text style={styles.logoutText}>{session ? '로그아웃' : '로그인 화면으로'}</Text></TouchableOpacity>
+    {session ? <TouchableOpacity style={styles.withdrawButton} onPress={onWithdraw}><Text style={styles.withdrawText}>회원탈퇴</Text></TouchableOpacity> : null}
   </View>;
 }

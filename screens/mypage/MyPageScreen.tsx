@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { MyPageCard, MyPageEditModal } from '../../components/mypage';
+import { MyPageCard, MyPageEditModal, WithdrawalConfirmModal } from '../../components/mypage';
 import { AuthSession, updateStoredSession } from '../../services/auth';
-import { updateMyNickname, uploadMyProfileImage } from '../../services/users';
+import { updateMyNickname, uploadMyProfileImage, withdrawMe } from '../../services/users';
 import { styles } from './MyPageScreen.styles';
 
 type Props = { session: AuthSession | null; onSessionChange: (session: AuthSession) => void; onExit: () => void };
@@ -17,6 +17,9 @@ export default function MyPageScreen({ session, onSessionChange, onExit }: Props
   const [profileError, setProfileError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [profileUploading, setProfileUploading] = useState(false);
+  const [withdrawOpen, setWithdrawOpen] = useState(false);
+  const [withdrawing, setWithdrawing] = useState(false);
+  const [withdrawError, setWithdrawError] = useState<string | null>(null);
 
   const applyUser = async (user: AuthSession['user']) => {
     if (!session) return;
@@ -65,8 +68,24 @@ export default function MyPageScreen({ session, onSessionChange, onExit }: Props
     } finally { setProfileUploading(false); }
   };
 
+  const withdraw = async () => {
+    if (!session || withdrawing) return;
+    setWithdrawing(true);
+    setWithdrawError(null);
+    try {
+      await withdrawMe(session.accessToken);
+      setWithdrawOpen(false);
+      onExit();
+    } catch (cause) {
+      setWithdrawError(cause instanceof Error ? cause.message : '회원탈퇴를 완료하지 못했습니다.');
+    } finally {
+      setWithdrawing(false);
+    }
+  };
+
   return <SafeAreaView style={styles.screen}>
-    <MyPageCard session={session} profileUploading={profileUploading} profileError={profileError} onEdit={openEdit} onProfileImagePress={() => void selectAndUploadProfileImage()} onExit={onExit} />
+    <MyPageCard session={session} profileUploading={profileUploading} profileError={profileError} onEdit={openEdit} onProfileImagePress={() => void selectAndUploadProfileImage()} onWithdraw={() => { setWithdrawError(null); setWithdrawOpen(true); }} onExit={onExit} />
     {session ? <MyPageEditModal visible={editOpen} user={session.user} nickname={nickname} error={editError} saving={saving} onNicknameChange={setNickname} onClose={closeEdit} onSave={() => void saveNickname()} /> : null}
+    <WithdrawalConfirmModal visible={withdrawOpen} withdrawing={withdrawing} error={withdrawError} onClose={() => { if (!withdrawing) setWithdrawOpen(false); }} onConfirm={() => void withdraw()} />
   </SafeAreaView>;
 }
