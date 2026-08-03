@@ -82,8 +82,8 @@ Google로 회원가입
 | --- | --- |
 | `components/auth` | 인증 UI와 사용자 이벤트 전달 |
 | `screens/auth` | OAuth 응답과 로그인·회원가입 단계 제어 |
-| `services/auth.ts` | 백엔드 인증 API 및 인증 타입 |
-| `services/session.ts` | Access Token 세션 저장·복원·삭제 |
+| `services/auth/api.ts` | 백엔드 인증 API 및 인증 타입 |
+| `services/auth/session.ts` | Access Token 세션 저장·복원·삭제 |
 
 `AuthCard` 안에서 직접 API를 호출하거나 세션을 저장하지 않습니다. 인증 방식이나 백엔드 구현이 변경되더라도 UI 컴포넌트가 독립적으로 유지되도록 이 경계를 지킵니다.
 
@@ -121,7 +121,7 @@ Google 인증 범위는 `openid`, `profile`, `email`입니다. 계정 선택 화
 
 ## 인증 API 상세
 
-`services/auth.ts`는 인증 API 요청과 공통 인증 타입을 제공합니다.
+`services/auth/api.ts`는 인증 API 요청과 공통 인증 타입을 제공합니다.
 
 ### 공개 함수
 
@@ -170,7 +170,7 @@ type AuthSession = {
 
 ## 세션 관리 상세
 
-`services/session.ts`는 키 `novforge.auth.session`으로 로그인 세션을 관리합니다.
+`services/auth/session.ts`는 키 `novforge.auth.session`으로 로그인 세션을 관리합니다.
 
 | 함수 | 설명 |
 | --- | --- |

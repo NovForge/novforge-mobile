@@ -1,23 +1,18 @@
 import { Platform } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
-import { AuthSession } from './auth';
+import { AuthSession } from './api';
 
 const SESSION_KEY = 'novforge.auth.session';
 type StoredSession = { session: AuthSession; expiresAt: number };
 
 export const saveSession = async (session: AuthSession) => {
-  const value = JSON.stringify({
-    session,
-    expiresAt: Date.now() + session.expiresIn * 1000,
-  } satisfies StoredSession);
+  const value = JSON.stringify({ session, expiresAt: Date.now() + session.expiresIn * 1000 } satisfies StoredSession);
   if (Platform.OS === 'web') window.localStorage.setItem(SESSION_KEY, value);
   else await SecureStore.setItemAsync(SESSION_KEY, value);
 };
 
 export const loadSession = async (): Promise<AuthSession | null> => {
-  const value = Platform.OS === 'web'
-    ? window.localStorage.getItem(SESSION_KEY)
-    : await SecureStore.getItemAsync(SESSION_KEY);
+  const value = Platform.OS === 'web' ? window.localStorage.getItem(SESSION_KEY) : await SecureStore.getItemAsync(SESSION_KEY);
   if (!value) return null;
   try {
     const stored = JSON.parse(value) as StoredSession;

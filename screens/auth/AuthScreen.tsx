@@ -5,8 +5,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import { makeRedirectUri } from 'expo-auth-session';
 import * as WebBrowser from 'expo-web-browser';
 import { AuthCard } from '../../components/auth';
-import { AuthSession, loginWithGoogle, signupWithGoogle } from '../../services/auth';
-import { saveSession } from '../../services/session';
+import { AuthSession, loginWithGoogle, saveSession, signupWithGoogle } from '../../services/auth';
 import { styles } from './AuthScreen.styles';
 
 WebBrowser.maybeCompleteAuthSession();

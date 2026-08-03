@@ -82,8 +82,8 @@ Googleで会員登録
 | --- | --- |
 | `components/auth` | 認証UIとユーザーイベントの通知 |
 | `screens/auth` | OAuthレスポンスとログイン・会員登録ステップの制御 |
-| `services/auth.ts` | バックエンド認証APIと認証関連の型 |
-| `services/session.ts` | Access Tokenセッションの保存・復元・削除 |
+| `services/auth/api.ts` | バックエンド認証APIと認証関連の型 |
+| `services/auth/session.ts` | Access Tokenセッションの保存・復元・削除 |
 
 `AuthCard`からAPIを直接呼び出したり、セッションを保存したりしません。認証方式やバックエンド実装が変わってもUIコンポーネントを独立して維持できるよう、この境界を守ります。
 
@@ -121,7 +121,7 @@ Google認証のスコープは`openid`、`profile`、`email`です。アカウ�
 
 ## 認証APIの詳細
 
-`services/auth.ts`は認証APIリクエストと共通の認証型を提供します。
+`services/auth/api.ts`は認証APIリクエストと共通の認証型を提供します。
 
 ### 公開関数
 
@@ -170,7 +170,7 @@ type AuthSession = {
 
 ## セッション管理の詳細
 
-`services/session.ts`はキー`novforge.auth.session`でログインセッションを管理します。
+`services/auth/session.ts`はキー`novforge.auth.session`でログインセッションを管理します。
 
 | 関数 | 説明 |
 | --- | --- |
