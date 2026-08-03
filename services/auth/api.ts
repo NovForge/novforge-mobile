@@ -10,6 +10,7 @@ export type AuthSession = {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
+  isAdmin: boolean;
   user: AuthUser;
 };
 

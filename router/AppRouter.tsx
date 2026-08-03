@@ -2,7 +2,7 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigationBar } from '../navigation';
-import { AuthScreen, EquipmentDetailScreen, EquipmentListScreen, MyBuildDetailScreen, MyBuildFormScreen, MyBuildListScreen, MyBuildPartPickerScreen, MyPageScreen } from '../screens';
+import { AdminEquipmentScreen, AuthScreen, EquipmentDetailScreen, EquipmentListScreen, MyBuildDetailScreen, MyBuildFormScreen, MyBuildListScreen, MyBuildPartPickerScreen, MyPageScreen } from '../screens';
 import { AuthSession } from '../services/auth';
 import { MainTabParamList, RootStackParamList } from './routes';
 
@@ -22,6 +22,7 @@ function MainTabs({ session, onExit }: Pick<Props, 'session' | 'onExit'>) {
   return <Tabs.Navigator screenOptions={{ headerShown: false }} tabBar={(props) => <BottomNavigationBar {...props} />}>
     <Tabs.Screen name="Equipment">{() => <EquipmentListScreen accessToken={session?.accessToken} />}</Tabs.Screen>
     <Tabs.Screen name="MyBuild">{() => <MyBuildListScreen accessToken={session?.accessToken} />}</Tabs.Screen>
+    {session?.isAdmin ? <Tabs.Screen name="Admin">{() => <AdminEquipmentScreen accessToken={session.accessToken} />}</Tabs.Screen> : null}
     <Tabs.Screen name="MyPage">{() => <MyPageScreen session={session} onExit={onExit} />}</Tabs.Screen>
   </Tabs.Navigator>;
 }
