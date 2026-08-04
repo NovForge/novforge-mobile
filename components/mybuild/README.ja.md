@@ -1,12 +1,14 @@
 # MyBuild コンポーネント
 
-ログインユーザーのPC構成見積もりの作成・参照・編集・削除、およびパーツ構成を管理するフロントエンド機能です。
+ログインユーザーのPC構成見積もりの作成・参照・編集・削除、および公開構成の閲覧を管理するフロントエンド機能です。
 
 UIコンポーネントは `components/mybuild`、画面状態とユーザーフローは `screens/mybuild`、サーバー通信と型定義は `services/mybuild`、画面遷移は `router` で管理します。
 
 ## 主な機能
 
 - 自分の見積もり一覧・詳細の取得
+- 他のユーザーが公開した構成一覧と読み取り専用詳細の取得
+- 自分の構成をすべて・公開・非公開で絞り込み
 - 空の見積もりの作成
 - 見積もり名と公開設定の変更
 - CPU、GPU、マザーボード、電源、CPUクーラー、ケースの追加・交換・削除
@@ -21,6 +23,7 @@ UIコンポーネントは `components/mybuild`、画面状態とユーザーフ
 ```text
 components/mybuild
 ├─ MyBuildCard.tsx
+├─ MyBuildReadOnlyDetail.tsx
 ├─ MyBuildCard.styles.ts
 └─ index.ts
 
@@ -28,6 +31,7 @@ screens/mybuild
 ├─ MyBuildListScreen.tsx
 ├─ MyBuildFormScreen.tsx
 ├─ MyBuildDetailScreen.tsx
+├─ PublicMyBuildDetailScreen.tsx
 ├─ MyBuildPartPickerScreen.tsx
 ├─ *.styles.ts
 └─ index.ts
@@ -59,17 +63,23 @@ services/mybuild
 />
 ```
 
+### MyBuildReadOnlyDetail
+
+公開構成の合計金額、公開状態、パーツ構成を表示します。編集・削除操作は提供せず、`PublicMyBuildDetailScreen` から再利用します。
+
 ## 画面
 
 ### MyBuildListScreen
 
-`GET /api/my-builds/me` を呼び出し、ユーザーの見積もり一覧を表示します。
+上部の公開構成・自分の構成タブに応じて、公開一覧またはログイン中ユーザーの構成一覧を表示します。自分の構成はすべて・公開・非公開で絞り込めます。
 
 - Access Tokenがない場合はログイン必須状態を表示
 - ローディング表示とエラー時の再試行を提供
 - 一覧が空の場合は新規作成ボタンを表示
 - 画面が再度アクティブになると一覧を自動更新
 - カード選択時に詳細画面へ移動
+
+公開構成カードは編集機能のない `PublicMyBuildDetailScreen` へ移動し、自分の構成カードは編集可能な `MyBuildDetailScreen` へ移動します。
 
 ### MyBuildFormScreen
 
@@ -113,11 +123,13 @@ services/mybuild
 
 ## Service
 
-`services/mybuild/api.ts` はMyBuildの型と認証が必要なAPI関数を提供します。すべてのリクエストで `Authorization: Bearer <Access Token>` ヘッダーを使用します。
+`services/mybuild/api.ts` はMyBuildの型と公開・ユーザー別API関数を提供します。自分の構成の取得・変更には `Authorization: Bearer <Access Token>` ヘッダーを使用し、公開構成の取得には認証ヘッダーを送信しません。
 
 | 関数 | Method / Endpoint | 説明 |
 | --- | --- | --- |
 | `fetchMyBuilds` | `GET /api/my-builds/me` | 自分の見積もり一覧を取得 |
+| `fetchPublicBuilds` | `GET /api/my-builds` | 公開構成一覧を取得 |
+| `fetchPublicBuild` | `GET /api/my-builds/{buildId}` | 公開構成の詳細を取得 |
 | `fetchMyBuild` | `GET /api/my-builds/me/{buildId}` | 自分の見積もり詳細を取得 |
 | `createMyBuild` | `POST /api/my-builds/me` | 新しい見積もりを作成 |
 | `updateMyBuild` | `PATCH /api/my-builds/me/{buildId}` | 基本情報またはパーツを更新 |
@@ -134,10 +146,12 @@ MainTabs
    └─ MyBuildListScreen
       ├─ MyBuildCreate
       │  └─ MyBuildFormScreen
-      └─ MyBuildDetail
+      ├─ MyBuildDetail
          ├─ MyBuildDetailScreen
          └─ MyBuildPartPicker
             └─ MyBuildPartPickerScreen
+      └─ PublicMyBuildDetail
+         └─ PublicMyBuildDetailScreen
 ```
 
 | Route | Params |
@@ -145,6 +159,7 @@ MainTabs
 | `MyBuild` | なし |
 | `MyBuildCreate` | なし |
 | `MyBuildDetail` | `{ buildId: number }` |
+| `PublicMyBuildDetail` | `{ buildId: number }` |
 | `MyBuildPartPicker` | `{ buildId: number, categoryKey: string }` |
 
 作成・詳細・パーツ選択画面は、ログインセッションがある場合のみRoot Stackへ登録されます。
@@ -170,7 +185,7 @@ npm exec tsc -- --noEmit
 
 | 場所 | 責務 |
 | --- | --- |
-| `components/mybuild` | 再利用可能な見積もりカードUI |
+| `components/mybuild` | 再利用可能な見積もりカードと公開構成の読み取り専用UI |
 | `screens/mybuild` | 画面状態、入力、確認ダイアログ、画面遷移 |
 | `services/mybuild` | DTO型、認証ヘッダー、MyBuild APIリクエスト |
 | `services/equipment` | パーツカテゴリと選択可能なパーツ一覧の取得 |

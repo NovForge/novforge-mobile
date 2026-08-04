@@ -4,6 +4,7 @@ export type RootStackParamList = {
   EquipmentDetail: { categoryKey: string; itemId: number };
   MyBuildCreate: undefined;
   MyBuildDetail: { buildId: number };
+  PublicMyBuildDetail: { buildId: number };
   MyBuildPartPicker: { buildId: number; categoryKey: string };
 };
 

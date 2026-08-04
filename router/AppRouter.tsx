@@ -2,7 +2,7 @@ import { NavigationContainer, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigationBar } from '../navigation';
-import { AdminEquipmentScreen, AuthScreen, EquipmentDetailScreen, EquipmentListScreen, MyBuildDetailScreen, MyBuildFormScreen, MyBuildListScreen, MyBuildPartPickerScreen, MyPageScreen } from '../screens';
+import { AdminEquipmentScreen, AuthScreen, EquipmentDetailScreen, EquipmentListScreen, MyBuildDetailScreen, MyBuildFormScreen, MyBuildListScreen, MyBuildPartPickerScreen, MyPageScreen, PublicMyBuildDetailScreen } from '../screens';
 import { AuthSession } from '../services/auth';
 import { MainTabParamList, RootStackParamList } from './routes';
 
@@ -38,6 +38,7 @@ export default function AppRouter({ session, isGuest, onAuthenticated, onGuest, 
         {session ? <>
           <RootStack.Screen name="MyBuildCreate" options={{ title: '새 견적', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildFormScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
           <RootStack.Screen name="MyBuildDetail" options={{ title: '견적 상세', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildDetailScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
+          <RootStack.Screen name="PublicMyBuildDetail" component={PublicMyBuildDetailScreen} options={{ title: '공개 견적', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }} />
           <RootStack.Screen name="MyBuildPartPicker" options={{ title: '부품 선택', headerStyle: { backgroundColor: '#111114' }, headerTintColor: '#ededed' }}>{(props) => <MyBuildPartPickerScreen {...props} accessToken={session.accessToken} />}</RootStack.Screen>
         </> : null}
       </>}
