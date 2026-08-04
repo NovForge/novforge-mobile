@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { createMyBuild } from '../../services/mybuild';
 import { RootStackParamList } from '../../router/routes';
 import { styles } from './MyBuildFormScreen.styles';
+import { colors } from '../../theme/colors';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'MyBuildCreate'> & { accessToken: string };
 export default function MyBuildFormScreen({ navigation, accessToken }: Props) {
@@ -16,8 +17,8 @@ export default function MyBuildFormScreen({ navigation, accessToken }: Props) {
     finally { setSaving(false); }
   };
   return <SafeAreaView style={styles.screen}><View style={styles.content}>
-    <Text style={styles.label}>견적 이름</Text><TextInput value={name} onChangeText={setName} placeholder="예: 200만원 게이밍 PC" placeholderTextColor="#475569" maxLength={100} style={styles.input} autoFocus />
-    <View style={styles.switchRow}><View><Text style={styles.switchTitle}>견적 공개</Text><Text style={styles.help}>다른 사용자가 이 견적을 볼 수 있습니다.</Text></View><Switch value={isPublic} onValueChange={setPublic} trackColor={{ false: '#404040', true: '#ffffff' }} thumbColor={isPublic ? '#000000' : '#d4d4d4'} /></View>
+    <Text style={styles.label}>견적 이름</Text><TextInput value={name} onChangeText={setName} placeholder="예: 200만원 게이밍 PC" placeholderTextColor={colors.textSubtle} maxLength={100} style={styles.input} autoFocus />
+    <View style={styles.switchRow}><View><Text style={styles.switchTitle}>견적 공개</Text><Text style={styles.help}>다른 사용자가 이 견적을 볼 수 있습니다.</Text></View><Switch value={isPublic} onValueChange={setPublic} trackColor={{ false: colors.surfaceMuted, true: colors.primary }} thumbColor={isPublic ? colors.primaryInk : colors.textSecondary} /></View>
     <TouchableOpacity style={[styles.button, saving && styles.disabled]} onPress={() => void submit()} disabled={saving}><Text style={styles.buttonText}>{saving ? '만드는 중...' : '견적 만들기'}</Text></TouchableOpacity>
   </View></SafeAreaView>;
 }

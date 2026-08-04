@@ -1,12 +1,13 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../theme/colors';
 
 export const styles = StyleSheet.create({
-  container: { flexDirection: 'row', backgroundColor: '#111114', borderTopWidth: 1, borderTopColor: '#27272a', paddingTop: 8, paddingBottom: 10 },
-  item: { flex: 1, alignItems: 'center', gap: 4 },
-  mark: { width: 30, height: 25, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
-  markActive: { backgroundColor: '#ededed' },
-  markText: { color: '#64748b', fontSize: 12, fontWeight: '900' },
-  markTextActive: { color: '#111111' },
-  label: { color: '#64748b', fontSize: 11, fontWeight: '700' },
-  labelActive: { color: '#dedede' },
+  container: { flexDirection: 'row', backgroundColor: colors.navigation, borderTopWidth: 1, borderTopColor: colors.border, paddingTop: 5, paddingBottom: 9, minHeight: 66 },
+  item: { flex: 1, minHeight: 52, alignItems: 'center', justifyContent: 'center', gap: 3, position: 'relative' },
+  indicator: { position: 'absolute', top: -5, width: 28, height: 2, backgroundColor: 'transparent' },
+  indicatorActive: { backgroundColor: colors.primary },
+  iconArea: { width: 36, height: 28, alignItems: 'center', justifyContent: 'center', borderRadius: 7 },
+  iconAreaActive: { backgroundColor: colors.primaryMuted },
+  label: { color: colors.textSubtle, fontSize: 10, fontWeight: '600' },
+  labelActive: { color: colors.text, fontWeight: '700' },
 });
