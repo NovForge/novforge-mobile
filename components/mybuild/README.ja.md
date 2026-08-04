@@ -63,7 +63,7 @@ services/mybuild
 
 ### MyBuildListScreen
 
-`GET /api/my-builds/me` を呼び出し、ユーザーの見積もり一覧を表示します。
+上部の公開構成・自分の構成タブに応じて、公開一覧またはログイン中ユーザーの構成一覧を表示します。自分の構成はすべて・公開・非公開で絞り込めます。
 
 - Access Tokenがない場合はログイン必須状態を表示
 - ローディング表示とエラー時の再試行を提供
@@ -118,6 +118,8 @@ services/mybuild
 | 関数 | Method / Endpoint | 説明 |
 | --- | --- | --- |
 | `fetchMyBuilds` | `GET /api/my-builds/me` | 自分の見積もり一覧を取得 |
+| `fetchPublicBuilds` | `GET /api/my-builds` | 公開構成一覧を取得 |
+| `fetchPublicBuild` | `GET /api/my-builds/{buildId}` | 公開構成の詳細を取得 |
 | `fetchMyBuild` | `GET /api/my-builds/me/{buildId}` | 自分の見積もり詳細を取得 |
 | `createMyBuild` | `POST /api/my-builds/me` | 新しい見積もりを作成 |
 | `updateMyBuild` | `PATCH /api/my-builds/me/{buildId}` | 基本情報またはパーツを更新 |
@@ -145,6 +147,7 @@ MainTabs
 | `MyBuild` | なし |
 | `MyBuildCreate` | なし |
 | `MyBuildDetail` | `{ buildId: number }` |
+| `PublicMyBuildDetail` | `{ buildId: number }` |
 | `MyBuildPartPicker` | `{ buildId: number, categoryKey: string }` |
 
 作成・詳細・パーツ選択画面は、ログインセッションがある場合のみRoot Stackへ登録されます。

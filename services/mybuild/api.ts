@@ -30,7 +30,7 @@ export type MyBuildWriteRequest = Partial<{
 async function request<T>(path: string, accessToken: string, method = 'GET', body?: unknown): Promise<T> {
   const response = await fetch(`${API_BASE_URL}${path}`, {
     method,
-    headers: { Authorization: `Bearer ${accessToken}`, ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
+    headers: { ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}), ...(body === undefined ? {} : { 'Content-Type': 'application/json' }) },
     body: body === undefined ? undefined : JSON.stringify(body),
   });
   if (!response.ok) {
@@ -52,6 +52,16 @@ export async function fetchMyBuilds(accessToken: string): Promise<MyBuild[]> {
   const data: unknown = await response.json();
   return Array.isArray(data) ? data as MyBuild[] : [];
 }
+
+export async function fetchPublicBuilds(): Promise<MyBuild[]> {
+  const response = await fetch(`${API_BASE_URL}/api/my-builds`);
+  if (!response.ok) throw new Error('공개 견적을 불러오지 못했습니다.');
+  const data: unknown = await response.json();
+  return Array.isArray(data) ? data as MyBuild[] : [];
+}
+
+export const fetchPublicBuild = (buildId: number) =>
+  request<MyBuild>(`/api/my-builds/${buildId}`, '');
 
 export const fetchMyBuild = (buildId: number, token: string) => request<MyBuild>(`/api/my-builds/me/${buildId}`, token);
 export const createMyBuild = (body: MyBuildWriteRequest & { buildName: string }, token: string) => request<MyBuild>('/api/my-builds/me', token, 'POST', body);

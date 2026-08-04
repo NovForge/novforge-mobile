@@ -1,12 +1,14 @@
 # MyBuild 컴포넌트
 
-로그인한 사용자의 PC 견적 생성, 조회, 수정, 삭제와 부품 구성을 담당하는 프론트엔드 기능입니다.
+로그인한 사용자의 PC 견적 생성, 조회, 수정, 삭제와 공개 견적 탐색을 담당하는 프론트엔드 기능입니다.
 
 UI 컴포넌트는 `components/mybuild`, 화면 상태와 사용자 흐름은 `screens/mybuild`, 서버 통신과 타입은 `services/mybuild`, 화면 전환은 `router`에서 관리합니다.
 
 ## 주요 기능
 
 - 내 견적 목록 및 상세 조회
+- 다른 사용자의 공개 견적 목록 및 읽기 전용 상세 조회
+- 내 견적 전체·공개·비공개 필터
 - 빈 견적 생성
 - 견적명과 공개 여부 수정
 - CPU, GPU, 메인보드, 파워, CPU 쿨러, 케이스 추가·교체·제거
@@ -21,6 +23,7 @@ UI 컴포넌트는 `components/mybuild`, 화면 상태와 사용자 흐름은 `s
 ```text
 components/mybuild
 ├─ MyBuildCard.tsx
+├─ MyBuildReadOnlyDetail.tsx
 ├─ MyBuildCard.styles.ts
 └─ index.ts
 
@@ -28,6 +31,7 @@ screens/mybuild
 ├─ MyBuildListScreen.tsx
 ├─ MyBuildFormScreen.tsx
 ├─ MyBuildDetailScreen.tsx
+├─ PublicMyBuildDetailScreen.tsx
 ├─ MyBuildPartPickerScreen.tsx
 ├─ *.styles.ts
 └─ index.ts
@@ -63,13 +67,15 @@ services/mybuild
 
 ### MyBuildListScreen
 
-`GET /api/my-builds/me`를 호출하여 사용자의 견적 목록을 표시합니다.
+상단의 `공개 견적`과 `내 견적` 탭에 따라 공개 목록 또는 로그인 사용자의 견적 목록을 표시합니다. 내 견적은 `전체`, `공개`, `비공개`로 필터링할 수 있습니다.
 
 - Access Token이 없으면 로그인 필요 상태 표시
 - 로딩 인디케이터와 오류 재시도 제공
 - 목록이 비어 있으면 새 견적 생성 버튼 표시
 - 화면이 다시 활성화되면 목록 자동 갱신
 - 카드 선택 시 상세 화면으로 이동
+
+공개 견적 카드는 수정 기능이 없는 `PublicMyBuildDetailScreen`으로 이동하며, 내 견적 카드는 편집 가능한 `MyBuildDetailScreen`으로 이동합니다.
 
 ### MyBuildFormScreen
 
@@ -118,6 +124,8 @@ services/mybuild
 | 함수 | Method / Endpoint | 설명 |
 | --- | --- | --- |
 | `fetchMyBuilds` | `GET /api/my-builds/me` | 내 견적 목록 조회 |
+| `fetchPublicBuilds` | `GET /api/my-builds` | 공개 견적 목록 조회 |
+| `fetchPublicBuild` | `GET /api/my-builds/{buildId}` | 공개 견적 상세 조회 |
 | `fetchMyBuild` | `GET /api/my-builds/me/{buildId}` | 내 견적 상세 조회 |
 | `createMyBuild` | `POST /api/my-builds/me` | 새 견적 생성 |
 | `updateMyBuild` | `PATCH /api/my-builds/me/{buildId}` | 기본 정보 또는 부품 수정 |
@@ -138,6 +146,8 @@ MainTabs
          ├─ MyBuildDetailScreen
          └─ MyBuildPartPicker
             └─ MyBuildPartPickerScreen
+      └─ PublicMyBuildDetail
+         └─ PublicMyBuildDetailScreen
 ```
 
 | Route | Params |
@@ -145,6 +155,7 @@ MainTabs
 | `MyBuild` | 없음 |
 | `MyBuildCreate` | 없음 |
 | `MyBuildDetail` | `{ buildId: number }` |
+| `PublicMyBuildDetail` | `{ buildId: number }` |
 | `MyBuildPartPicker` | `{ buildId: number, categoryKey: string }` |
 
 생성·상세·부품 선택 화면은 로그인 세션이 있을 때만 Root Stack에 등록됩니다.
