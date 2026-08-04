@@ -1,12 +1,14 @@
 # MyBuild コンポーネント
 
-ログインユーザーのPC構成見積もりの作成・参照・編集・削除、およびパーツ構成を管理するフロントエンド機能です。
+ログインユーザーのPC構成見積もりの作成・参照・編集・削除、および公開構成の閲覧を管理するフロントエンド機能です。
 
 UIコンポーネントは `components/mybuild`、画面状態とユーザーフローは `screens/mybuild`、サーバー通信と型定義は `services/mybuild`、画面遷移は `router` で管理します。
 
 ## 主な機能
 
 - 自分の見積もり一覧・詳細の取得
+- 他のユーザーが公開した構成一覧と読み取り専用詳細の取得
+- 自分の構成をすべて・公開・非公開で絞り込み
 - 空の見積もりの作成
 - 見積もり名と公開設定の変更
 - CPU、GPU、マザーボード、電源、CPUクーラー、ケースの追加・交換・削除
@@ -21,6 +23,7 @@ UIコンポーネントは `components/mybuild`、画面状態とユーザーフ
 ```text
 components/mybuild
 ├─ MyBuildCard.tsx
+├─ MyBuildReadOnlyDetail.tsx
 ├─ MyBuildCard.styles.ts
 └─ index.ts
 
@@ -28,6 +31,7 @@ screens/mybuild
 ├─ MyBuildListScreen.tsx
 ├─ MyBuildFormScreen.tsx
 ├─ MyBuildDetailScreen.tsx
+├─ PublicMyBuildDetailScreen.tsx
 ├─ MyBuildPartPickerScreen.tsx
 ├─ *.styles.ts
 └─ index.ts
@@ -59,6 +63,10 @@ services/mybuild
 />
 ```
 
+### MyBuildReadOnlyDetail
+
+公開構成の合計金額、公開状態、パーツ構成を表示します。編集・削除操作は提供せず、`PublicMyBuildDetailScreen` から再利用します。
+
 ## 画面
 
 ### MyBuildListScreen
@@ -70,6 +78,8 @@ services/mybuild
 - 一覧が空の場合は新規作成ボタンを表示
 - 画面が再度アクティブになると一覧を自動更新
 - カード選択時に詳細画面へ移動
+
+公開構成カードは編集機能のない `PublicMyBuildDetailScreen` へ移動し、自分の構成カードは編集可能な `MyBuildDetailScreen` へ移動します。
 
 ### MyBuildFormScreen
 
@@ -113,7 +123,7 @@ services/mybuild
 
 ## Service
 
-`services/mybuild/api.ts` はMyBuildの型と認証が必要なAPI関数を提供します。すべてのリクエストで `Authorization: Bearer <Access Token>` ヘッダーを使用します。
+`services/mybuild/api.ts` はMyBuildの型と公開・ユーザー別API関数を提供します。自分の構成の取得・変更には `Authorization: Bearer <Access Token>` ヘッダーを使用し、公開構成の取得には認証ヘッダーを送信しません。
 
 | 関数 | Method / Endpoint | 説明 |
 | --- | --- | --- |
@@ -136,10 +146,12 @@ MainTabs
    └─ MyBuildListScreen
       ├─ MyBuildCreate
       │  └─ MyBuildFormScreen
-      └─ MyBuildDetail
+      ├─ MyBuildDetail
          ├─ MyBuildDetailScreen
          └─ MyBuildPartPicker
             └─ MyBuildPartPickerScreen
+      └─ PublicMyBuildDetail
+         └─ PublicMyBuildDetailScreen
 ```
 
 | Route | Params |
@@ -173,7 +185,7 @@ npm exec tsc -- --noEmit
 
 | 場所 | 責務 |
 | --- | --- |
-| `components/mybuild` | 再利用可能な見積もりカードUI |
+| `components/mybuild` | 再利用可能な見積もりカードと公開構成の読み取り専用UI |
 | `screens/mybuild` | 画面状態、入力、確認ダイアログ、画面遷移 |
 | `services/mybuild` | DTO型、認証ヘッダー、MyBuild APIリクエスト |
 | `services/equipment` | パーツカテゴリと選択可能なパーツ一覧の取得 |

@@ -63,6 +63,10 @@ services/mybuild
 />
 ```
 
+### MyBuildReadOnlyDetail
+
+공개 견적의 총금액, 공개 상태와 부품 구성을 표시합니다. 수정·삭제 명령을 제공하지 않으며 `PublicMyBuildDetailScreen`에서 재사용합니다.
+
 ## 화면
 
 ### MyBuildListScreen
@@ -119,7 +123,7 @@ services/mybuild
 
 ## Service
 
-`services/mybuild/api.ts`는 MyBuild 타입과 인증이 필요한 API 함수를 제공합니다. 모든 요청에 `Authorization: Bearer <Access Token>` 헤더를 사용합니다.
+`services/mybuild/api.ts`는 MyBuild 타입과 공개·사용자별 API 함수를 제공합니다. 내 견적 조회와 변경 요청에는 `Authorization: Bearer <Access Token>` 헤더를 사용하고, 공개 견적 조회에는 인증 헤더를 보내지 않습니다.
 
 | 함수 | Method / Endpoint | 설명 |
 | --- | --- | --- |
@@ -142,7 +146,7 @@ MainTabs
    └─ MyBuildListScreen
       ├─ MyBuildCreate
       │  └─ MyBuildFormScreen
-      └─ MyBuildDetail
+      ├─ MyBuildDetail
          ├─ MyBuildDetailScreen
          └─ MyBuildPartPicker
             └─ MyBuildPartPickerScreen
@@ -181,7 +185,7 @@ npm exec tsc -- --noEmit
 
 | 위치 | 책임 |
 | --- | --- |
-| `components/mybuild` | 재사용 가능한 견적 카드 UI |
+| `components/mybuild` | 재사용 가능한 견적 카드와 공개 견적 읽기 전용 UI |
 | `screens/mybuild` | 화면 상태, 입력, 확인 대화상자, 화면 이동 |
 | `services/mybuild` | DTO 타입, 인증 헤더, MyBuild API 요청 |
 | `services/equipment` | 부품 카테고리와 선택 가능한 부품 목록 조회 |
