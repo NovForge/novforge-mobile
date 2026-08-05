@@ -150,6 +150,10 @@ MainTabs
 
 `EquipmentDetail`はRoot Stackにあるため、詳細画面は下部タブの上に積まれ、システムまたはヘッダーの戻る操作で一覧へ戻ります。
 
+## 画像パス
+
+機器の `imageUrl` が `/equipment-images/...` 形式の相対パスの場合、`EXPO_PUBLIC_API_BASE_URL` を先頭に追加してAPIの静的画像を表示します。`http://` または `https://` で始まる外部画像URLはそのまま使用します。
+
 ## 責務の分離
 
 | 場所 | 責務 |

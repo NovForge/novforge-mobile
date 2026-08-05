@@ -4,6 +4,12 @@ export type EquipmentCategory = { key: string; label: string; endpoint: string }
 export type EquipmentItem = { id: number; manufacturer: string; name: string; price: number; description?: string | null; imageUrl?: string | null; [key: string]: unknown };
 export type EquipmentField = { key: string; label: string; kind?: 'text' | 'number' | 'boolean' | 'multiline'; placeholder?: string; optional?: boolean };
 
+export const resolveEquipmentImageUrl = (imageUrl?: string | null) => {
+  if (!imageUrl) return null;
+  if (/^https?:\/\//i.test(imageUrl)) return imageUrl;
+  return `${API_BASE_URL}${imageUrl.startsWith('/') ? imageUrl : `/${imageUrl}`}`;
+};
+
 export const EQUIPMENT_CATEGORIES: EquipmentCategory[] = [
   { key: 'cpu', label: 'CPU', endpoint: '/api/cpus' },
   { key: 'gpu', label: 'GPU', endpoint: '/api/gpus' },
