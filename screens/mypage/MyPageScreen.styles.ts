@@ -1,7 +1,8 @@
 import { StyleSheet } from 'react-native';
+import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#0c0c0e', padding: 20 },
+  screen: { flex: 1, backgroundColor: colors.background, padding: 20 },
   header: { marginTop: 16, marginBottom: 24 },
   eyebrow: { color: '#555555', fontSize: 10, fontWeight: '700', letterSpacing: 1.5 },
   title: { color: '#ededed', fontSize: 24, fontWeight: '700', marginTop: 5 },
