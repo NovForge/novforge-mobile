@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, FlatList, SafeAreaView, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { StatusBar } from 'expo-status-bar';
-import { CategoryTabs, EquipmentCard } from '../../components/equipment';
+import { CategoryTabs, EquipmentCard, EquipmentSearchBar } from '../../components/equipment';
 import { EQUIPMENT_CATEGORIES, EquipmentCategory, EquipmentItem, EquipmentSearchItem, fetchEquipment, searchEquipment } from '../../services/equipment';
 import { RootStackParamList } from '../../router/routes';
 import { styles } from './EquipmentListScreen.styles';
@@ -60,16 +60,7 @@ export default function EquipmentListScreen({ accessToken }: Props) {
     <StatusBar style="light" />
     <View style={styles.header}><Text style={styles.brand}>NOVFORGE</Text><Text style={styles.title}>PC 부품</Text></View>
     <View style={styles.searchContainer}>
-      <TextInput
-        style={styles.searchInput}
-        value={keyword}
-        onChangeText={setKeyword}
-        placeholder="장비명 또는 제조사 검색"
-        placeholderTextColor="#7d8590"
-        returnKeyType="search"
-        autoCorrect={false}
-        clearButtonMode="while-editing"
-      />
+      <EquipmentSearchBar value={keyword} onChangeText={setKeyword} />
     </View>
     {!searching && <CategoryTabs selected={category} onSelect={setCategory} />}
     {loading ? <View style={styles.center}><ActivityIndicator size="large" color="#ffffff" /></View>

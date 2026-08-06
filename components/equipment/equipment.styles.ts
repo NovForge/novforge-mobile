@@ -2,6 +2,8 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
+  searchBox: { flexDirection: 'row', alignItems: 'center', height: 44, borderRadius: 10, paddingHorizontal: 13, backgroundColor: colors.surface, borderWidth: 1, borderColor: colors.border, gap: 9 },
+  searchInput: { flex: 1, height: 42, color: colors.text, fontSize: 15, paddingVertical: 0 },
   tabBar: { height: 48, minHeight: 48, maxHeight: 48, flexGrow: 0, flexShrink: 0, backgroundColor: colors.background, borderBottomWidth: 1, borderColor: colors.border },
   tabContent: { height: 48, paddingHorizontal: 14, alignItems: 'center' },
   tab: { paddingHorizontal: 15, paddingVertical: 13, marginRight: 3 },
