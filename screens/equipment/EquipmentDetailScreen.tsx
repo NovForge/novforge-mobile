@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { EquipmentItem, EQUIPMENT_CATEGORIES, fetchEquipmentDetail } from '../../services/equipment';
+import { EquipmentItem, EQUIPMENT_CATEGORIES, fetchEquipmentDetail, resolveEquipmentImageUrl } from '../../services/equipment';
 import { RootStackParamList } from '../../router/routes';
 import { styles } from './EquipmentDetailScreen.styles';
 
@@ -16,9 +16,10 @@ export default function EquipmentDetailScreen({ route, accessToken }: Props) {
   useEffect(() => { fetchEquipmentDetail(route.params.categoryKey, route.params.itemId, accessToken).then(setItem).catch((cause) => setError(cause instanceof Error ? cause.message : '상세 정보를 불러오지 못했습니다.')); }, [route.params.categoryKey, route.params.itemId, accessToken]);
   if (error) return <SafeAreaView style={styles.center}><Text style={styles.error}>{error}</Text></SafeAreaView>;
   if (!item) return <SafeAreaView style={styles.center}><ActivityIndicator size="large" color="#ffffff" /></SafeAreaView>;
+  const imageUrl = resolveEquipmentImageUrl(item.imageUrl);
   const specs = Object.entries(item).filter(([key, value]) => !BASE_KEYS.has(key) && value !== null && value !== undefined);
   return <SafeAreaView style={styles.screen}><ScrollView>
-    {item.imageUrl ? <Image source={{ uri: item.imageUrl }} style={styles.image} resizeMode="cover" /> : <View style={styles.imageFallback}><Text style={styles.imageFallbackText}>{category?.label || 'PC'}</Text></View>}
+    {imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" /> : <View style={styles.imageFallback}><Text style={styles.imageFallbackText}>{category?.label || 'PC'}</Text></View>}
     <View style={styles.body}><Text style={styles.manufacturer}>{item.manufacturer}</Text><Text style={styles.name}>{item.name}</Text><Text style={styles.price}>{Number(item.price || 0).toLocaleString('ko-KR')}원</Text>
       {item.description ? <Text style={styles.description}>{item.description}</Text> : null}
       {specs.length > 0 && <><Text style={styles.specTitle}>상세 사양</Text>{specs.map(([key, value]) => <View key={key} style={styles.specRow}><Text style={styles.specLabel}>{LABELS[key] || key}</Text><Text style={styles.specValue}>{typeof value === 'boolean' ? (value ? '지원' : '미지원') : String(value)}</Text></View>)}</>}

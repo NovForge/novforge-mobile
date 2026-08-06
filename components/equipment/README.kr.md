@@ -166,6 +166,10 @@ MainTabs
 
 `EquipmentDetail`은 Root Stack에 있으므로 상세 화면으로 이동하면 하단 탭 위에 새 화면이 쌓이고, 시스템 뒤로 가기 또는 헤더 뒤로 가기로 목록에 복귀합니다.
 
+## 이미지 경로
+
+장비 `imageUrl`이 `/equipment-images/...` 형식의 상대 경로이면 `EXPO_PUBLIC_API_BASE_URL`을 앞에 붙여 API의 정적 이미지를 표시합니다. `http://` 또는 `https://`로 시작하는 외부 이미지 URL은 그대로 사용합니다.
+
 ## 책임 분리
 
 | 위치 | 책임 |
