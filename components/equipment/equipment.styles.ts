@@ -2,8 +2,8 @@ import { StyleSheet } from 'react-native';
 import { colors } from '../../theme/colors';
 
 export const styles = StyleSheet.create({
-  tabBar: { maxHeight: 48, borderBottomWidth: 1, borderColor: colors.border },
-  tabContent: { paddingHorizontal: 14, alignItems: 'center' },
+  tabBar: { height: 48, minHeight: 48, maxHeight: 48, flexGrow: 0, flexShrink: 0, backgroundColor: colors.background, borderBottomWidth: 1, borderColor: colors.border },
+  tabContent: { height: 48, paddingHorizontal: 14, alignItems: 'center' },
   tab: { paddingHorizontal: 15, paddingVertical: 13, marginRight: 3 },
   tabActive: { borderBottomWidth: 2, borderBottomColor: colors.primary },
   tabText: { color: colors.textSubtle, fontSize: 13, fontWeight: '600' },
