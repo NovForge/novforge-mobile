@@ -1,0 +1,13 @@
+import { StyleSheet } from 'react-native';
+import { colors } from '../../theme/colors';
+export const styles = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: colors.background }, header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 20, paddingTop: 20, paddingBottom: 18 },
+  brand: { color: colors.primary, fontSize: 10, fontWeight: '800', letterSpacing: 1.5 }, title: { color: colors.text, fontSize: 24, fontWeight: '700', marginTop: 4 }, subtitle: { color: colors.textMuted, fontSize: 12, marginTop: 6 },
+  addButton: { width: 38, height: 38, borderRadius: 7, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.primary }, addIcon: { color: colors.primaryInk, fontSize: 22, lineHeight: 24 },
+  modeTabs: { flexDirection: 'row', marginHorizontal: 16, marginBottom: 10, borderBottomWidth: 1, borderBottomColor: colors.border }, modeTab: { flex: 1, alignItems: 'center', paddingVertical: 12, borderBottomWidth: 2, borderBottomColor: 'transparent' }, modeTabActive: { borderBottomColor: colors.primary }, modeTabText: { color: colors.textSubtle, fontSize: 13, fontWeight: '700' }, modeTabTextActive: { color: colors.text },
+  filters: { flexDirection: 'row', gap: 7, paddingHorizontal: 16, paddingBottom: 12 }, filter: { minWidth: 58, alignItems: 'center', borderWidth: 1, borderColor: colors.border, borderRadius: 6, paddingHorizontal: 13, paddingVertical: 7 }, filterActive: { backgroundColor: colors.primaryMuted, borderColor: colors.primary }, filterText: { color: colors.textMuted, fontSize: 11, fontWeight: '700' }, filterTextActive: { color: colors.primary },
+  list: { paddingHorizontal: 16, paddingTop: 4, paddingBottom: 32 }, emptyList: { flexGrow: 1 }, center: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 32, paddingBottom: 50 },
+  stateIcon: { width: 48, height: 48, borderRadius: 8, alignItems: 'center', justifyContent: 'center', backgroundColor: colors.surfaceRaised, borderWidth: 1, borderColor: colors.border, marginBottom: 18 }, stateIconText: { color: colors.primary, fontSize: 19, fontWeight: '700' },
+  stateTitle: { color: colors.text, fontSize: 17, fontWeight: '700', textAlign: 'center' }, stateBody: { color: colors.textMuted, fontSize: 13, lineHeight: 20, textAlign: 'center', marginTop: 8 },
+  retryButton: { marginTop: 20, borderRadius: 7, backgroundColor: colors.primary, paddingHorizontal: 21, paddingVertical: 12 }, retryText: { color: colors.primaryInk, fontWeight: '800' }, primaryButton: { marginTop: 22, borderRadius: 7, backgroundColor: colors.primary, paddingHorizontal: 24, paddingVertical: 14 }, primaryButtonText: { color: colors.primaryInk, fontSize: 14, fontWeight: '800' },
+});
