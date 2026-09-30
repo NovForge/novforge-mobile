@@ -2,6 +2,7 @@ import { API_BASE_URL } from '../auth';
 
 export type EquipmentCategory = { key: string; label: string; endpoint: string };
 export type EquipmentItem = { id: number; manufacturer: string; name: string; price: number; description?: string | null; imageUrl?: string | null; [key: string]: unknown };
+export type EquipmentSearchItem = EquipmentItem & { type: string };
 export type EquipmentField = { key: string; label: string; kind?: 'text' | 'number' | 'boolean' | 'multiline'; placeholder?: string; optional?: boolean };
 
 export const resolveEquipmentImageUrl = (imageUrl?: string | null) => {
@@ -56,6 +57,15 @@ export const fetchEquipment = async (category: EquipmentCategory, accessToken?: 
   if (!response.ok) throw new Error(await errorMessage(response));
   const data: unknown = await response.json();
   return Array.isArray(data) ? data as EquipmentItem[] : [];
+};
+
+export const searchEquipment = async (keyword: string, accessToken?: string) => {
+  const response = await fetch(`${API_BASE_URL}/api/equipment/search?keyword=${encodeURIComponent(keyword.trim())}`, {
+    headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+  });
+  if (!response.ok) throw new Error(await errorMessage(response));
+  const data: unknown = await response.json();
+  return Array.isArray(data) ? data as EquipmentSearchItem[] : [];
 };
 
 export const fetchEquipmentDetail = async (categoryKey: string, itemId: number, accessToken?: string) => {

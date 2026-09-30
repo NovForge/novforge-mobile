@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Image, SafeAreaView, ScrollView, Text, View } from 'react-native';
+import { ActivityIndicator, Image, SafeAreaView, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { EquipmentItem, EQUIPMENT_CATEGORIES, fetchEquipmentDetail, resolveEquipmentImageUrl } from '../../services/equipment';
 import { RootStackParamList } from '../../router/routes';
 import { styles } from './EquipmentDetailScreen.styles';
+import { AddEquipmentToBuildModal } from '../../components/equipment';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'EquipmentDetail'> & { accessToken?: string };
 const BASE_KEYS = new Set(['id', 'manufacturer', 'name', 'price', 'description', 'imageUrl', 'createdAt', 'updatedAt']);
@@ -12,6 +13,7 @@ const LABELS: Record<string, string> = { socket: '소켓', cores: '코어', thre
 export default function EquipmentDetailScreen({ route, accessToken }: Props) {
   const [item, setItem] = useState<EquipmentItem | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [buildModalVisible, setBuildModalVisible] = useState(false);
   const category = EQUIPMENT_CATEGORIES.find((entry) => entry.key === route.params.categoryKey);
   useEffect(() => { fetchEquipmentDetail(route.params.categoryKey, route.params.itemId, accessToken).then(setItem).catch((cause) => setError(cause instanceof Error ? cause.message : '상세 정보를 불러오지 못했습니다.')); }, [route.params.categoryKey, route.params.itemId, accessToken]);
   if (error) return <SafeAreaView style={styles.center}><Text style={styles.error}>{error}</Text></SafeAreaView>;
@@ -21,8 +23,9 @@ export default function EquipmentDetailScreen({ route, accessToken }: Props) {
   return <SafeAreaView style={styles.screen}><ScrollView>
     {imageUrl ? <Image source={{ uri: imageUrl }} style={styles.image} resizeMode="cover" /> : <View style={styles.imageFallback}><Text style={styles.imageFallbackText}>{category?.label || 'PC'}</Text></View>}
     <View style={styles.body}><Text style={styles.manufacturer}>{item.manufacturer}</Text><Text style={styles.name}>{item.name}</Text><Text style={styles.price}>{Number(item.price || 0).toLocaleString('ko-KR')}원</Text>
+      {accessToken ? <TouchableOpacity style={styles.addToBuildButton} onPress={() => setBuildModalVisible(true)}><Text style={styles.addToBuildText}>내 견적에 추가 또는 교체</Text></TouchableOpacity> : null}
       {item.description ? <Text style={styles.description}>{item.description}</Text> : null}
       {specs.length > 0 && <><Text style={styles.specTitle}>상세 사양</Text>{specs.map(([key, value]) => <View key={key} style={styles.specRow}><Text style={styles.specLabel}>{LABELS[key] || key}</Text><Text style={styles.specValue}>{typeof value === 'boolean' ? (value ? '지원' : '미지원') : String(value)}</Text></View>)}</>}
     </View>
-  </ScrollView></SafeAreaView>;
+  </ScrollView>{accessToken ? <AddEquipmentToBuildModal visible={buildModalVisible} item={item} categoryKey={route.params.categoryKey} accessToken={accessToken} onClose={() => setBuildModalVisible(false)} /> : null}</SafeAreaView>;
 }

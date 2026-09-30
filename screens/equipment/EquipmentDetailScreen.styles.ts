@@ -12,6 +12,8 @@ export const styles = StyleSheet.create({
   manufacturer: { color: colors.textSubtle, fontSize: 10, fontWeight: '600', textTransform: 'uppercase' },
   name: { color: colors.text, fontSize: 24, fontWeight: '700', lineHeight: 31, marginTop: 7 },
   price: { color: colors.primary, fontSize: 20, fontWeight: '700', marginTop: 12 },
+  addToBuildButton: { alignItems: 'center', backgroundColor: colors.primary, borderRadius: 9, paddingVertical: 13, marginTop: 18 },
+  addToBuildText: { color: colors.primaryInk, fontSize: 14, fontWeight: '800' },
   description: { color: colors.textMuted, fontSize: 13, lineHeight: 21, marginTop: 20 },
   specTitle: { color: colors.textSecondary, fontSize: 15, fontWeight: '700', marginTop: 26, marginBottom: 10 },
   specRow: { flexDirection: 'row', justifyContent: 'space-between', borderBottomWidth: 1, borderBottomColor: colors.border, paddingVertical: 11, gap: 20 },

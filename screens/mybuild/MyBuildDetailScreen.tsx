@@ -27,7 +27,7 @@ export default function MyBuildDetailScreen({ route, navigation, accessToken }: 
     const next = target.quantity > 1 ? current.map((part) => ({ id: part.id, quantity: part.id === id ? part.quantity - 1 : part.quantity })) : current.filter((part) => part.id !== id).map((part) => ({ id: part.id, quantity: part.quantity }));
     try { setBuild(await updateMyBuild(build.buildId, { [kind]: next }, accessToken)); } catch (e) { Alert.alert('수정 실패', e instanceof Error ? e.message : '수량을 수정하지 못했습니다.'); }
   };
-  const destroy = () => Alert.alert('견적 삭제', '삭제한 견적은 복구할 수 없습니다.', [{ text: '취소' }, { text: '삭제', style: 'destructive', onPress: async () => { try { await deleteMyBuild(route.params.buildId, accessToken); navigation.popTo('MainTabs'); } catch (e) { Alert.alert('삭제 실패', e instanceof Error ? e.message : '삭제하지 못했습니다.'); } } }]);
+  const destroy = () => Alert.alert('견적 삭제', '삭제한 견적은 복구할 수 없습니다.', [{ text: '취소' }, { text: '삭제', style: 'destructive', onPress: async () => { try { await deleteMyBuild(route.params.buildId, accessToken); navigation.reset({ index: 0, routes: [{ name: 'MainTabs' }] }); } catch (e) { Alert.alert('삭제 실패', e instanceof Error ? e.message : '삭제하지 못했습니다.'); } } }]);
   if (loading || !build) return <SafeAreaView style={styles.screen}><View style={styles.center}><ActivityIndicator size="large" color="#ffffff" /></View></SafeAreaView>;
   return <SafeAreaView style={styles.screen}><ScrollView contentContainerStyle={styles.content}>
     <View style={styles.priceCard}><Text style={styles.priceLabel}>총 견적 금액</Text><Text style={styles.price}>{build.totalPrice.toLocaleString('ko-KR')}원</Text></View>

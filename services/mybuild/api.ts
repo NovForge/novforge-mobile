@@ -68,3 +68,29 @@ export const createMyBuild = (body: MyBuildWriteRequest & { buildName: string },
 export const updateMyBuild = (buildId: number, body: MyBuildWriteRequest, token: string) => request<MyBuild>(`/api/my-builds/me/${buildId}`, token, 'PATCH', body);
 export const removeMyBuildPart = (buildId: number, partType: string, token: string) => request<MyBuild>(`/api/my-builds/me/${buildId}/parts/${partType}`, token, 'DELETE');
 export const deleteMyBuild = (buildId: number, token: string) => request<void>(`/api/my-builds/me/${buildId}`, token, 'DELETE');
+
+const singlePartFields: Record<string, keyof MyBuildWriteRequest> = {
+  cpu: 'cpuId', gpu: 'gpuId', motherboard: 'motherboardId', power: 'powerId',
+  cooler: 'cpuCoolerId', case: 'caseId',
+};
+
+export const partRequest = (categoryKey: string, itemId: number, build?: MyBuild): MyBuildWriteRequest => {
+  if (categoryKey === 'memory' || categoryKey === 'storage') {
+    const key = categoryKey === 'memory' ? 'memories' : 'storages';
+    const current = build?.[key] || [];
+    const exists = current.some((part) => part.id === itemId);
+    const parts = exists
+      ? current.map((part) => ({ id: part.id, quantity: part.id === itemId ? part.quantity + 1 : part.quantity }))
+      : [...current.map((part) => ({ id: part.id, quantity: part.quantity })), { id: itemId, quantity: 1 }];
+    return { [key]: parts };
+  }
+  const field = singlePartFields[categoryKey];
+  if (!field) throw new Error('지원하지 않는 부품입니다.');
+  return { [field]: itemId };
+};
+
+export const addPartToMyBuild = (build: MyBuild, categoryKey: string, itemId: number, token: string) =>
+  updateMyBuild(build.buildId, partRequest(categoryKey, itemId, build), token);
+
+export const createMyBuildWithPart = (buildName: string, categoryKey: string, itemId: number, token: string) =>
+  createMyBuild({ buildName, publicBuild: false, ...partRequest(categoryKey, itemId) }, token);
